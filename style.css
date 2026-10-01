@@ -1,0 +1,653 @@
+/* ==========================================================================
+   TOJI PAINTER - FOLHA DE ESTILOS (CSS3)
+   Estética Urbana Sombria inspirada em Jujutsu Kaisen (Shibuya / Shinjuku)
+   ========================================================================== */
+
+:root {
+  --bg-dark: #080a0f;
+  --bg-surface: #10141e;
+  --bg-panel: rgba(18, 23, 35, 0.85);
+  --border-panel: rgba(255, 255, 255, 0.08);
+  --border-glow: rgba(147, 51, 234, 0.35);
+
+  --color-red: #ff2a5f;
+  --color-blue: #00d2ff;
+  --color-yellow: #ffcf00;
+  --color-purple: #b347ff;
+  --color-none: #4b5563;
+
+  --text-main: #f3f4f6;
+  --text-muted: #9ca3af;
+  --text-gold: #fbbf24;
+
+  --font-display: 'Cinzel', serif;
+  --font-ui: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+body {
+  background-color: var(--bg-dark);
+  background-image: 
+    radial-gradient(circle at 50% 0%, rgba(139, 92, 246, 0.15) 0%, transparent 60%),
+    radial-gradient(circle at 10% 90%, rgba(255, 42, 95, 0.08) 0%, transparent 50%),
+    linear-gradient(180deg, #06070a 0%, #0a0d14 100%);
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-x: hidden;
+  padding: 12px 8px 30px;
+}
+
+/* Container Principal */
+.game-wrapper {
+  width: 100%;
+  max-width: 640px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Cabeçalho do Jogo */
+header.header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-panel);
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+
+h1.game-title {
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff 20%, #e2e8f0 50%, #94a3b8 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.15);
+}
+
+.kanji-badge {
+  font-size: 0.75rem;
+  letter-spacing: 2px;
+  color: var(--color-red);
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+}
+
+/* Botões Rápidos do Topo */
+.quick-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.icon-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.icon-btn:active {
+  transform: translateY(1px);
+}
+
+/* HUD Bar (Painel de Status) */
+.hud-bar {
+  width: 100%;
+  background: var(--bg-panel);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--border-panel);
+  border-radius: 14px;
+  padding: 10px 16px;
+  display: grid;
+  grid-template-columns: 1.2fr 1.3fr 1fr;
+  align-items: center;
+  gap: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+}
+
+.hud-col {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hud-label {
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.level-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.level-num {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.stage-name-ticker {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 140px;
+}
+
+/* Indicador da Tinta Atual do Toji */
+.paint-indicator-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  background: rgba(0, 0, 0, 0.35);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  padding: 4px 10px;
+  transition: all 0.3s ease;
+}
+
+.paint-vessel {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background-color: var(--color-none);
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.paint-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.paint-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-main);
+  transition: color 0.3s ease;
+}
+
+/* Estatísticas: Selos, Movimentos e Estrelas */
+.hud-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+}
+
+.target-counter {
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #e2e8f0;
+}
+
+.moves-counter {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+
+.stars-counter {
+  display: flex;
+  gap: 3px;
+  font-size: 0.85rem;
+}
+
+.star-icon {
+  color: #374151;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.star-icon.earned {
+  color: var(--text-gold);
+  text-shadow: 0 0 8px rgba(251, 191, 36, 0.8);
+  transform: scale(1.15);
+}
+
+/* Container do Canvas do Jogo */
+.canvas-container {
+  position: relative;
+  width: 100%;
+  background: #090c14;
+  border: 2px solid rgba(139, 92, 246, 0.25);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.8),
+    0 0 40px rgba(139, 92, 246, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  aspect-ratio: 11 / 9;
+  touch-action: none;
+}
+
+canvas#gameCanvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges;
+  touch-action: none;
+}
+
+/* Notificação flutuante dentro do Canvas */
+.portal-banner {
+  position: absolute;
+  top: 14px;
+  background: linear-gradient(90deg, rgba(168, 85, 247, 0.95), rgba(59, 130, 246, 0.95));
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.85rem;
+  letter-spacing: 0.5px;
+  padding: 6px 18px;
+  border-radius: 20px;
+  box-shadow: 0 0 24px rgba(168, 85, 247, 0.7);
+  transform: translateY(-70px);
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+  z-index: 5;
+}
+
+.portal-banner.show {
+  transform: translateY(0);
+}
+
+/* Barra de Controles Inferior */
+.controls-panel {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+}
+
+/* Teclado e D-Pad Virtual */
+.dpad-container {
+  display: grid;
+  grid-template-areas:
+    ". up ."
+    "left center right"
+    ". down .";
+  grid-template-columns: 58px 58px 58px;
+  grid-template-rows: 52px 52px 52px;
+  gap: 6px;
+  margin-top: 4px;
+  touch-action: manipulation;
+}
+
+.dpad-btn {
+  background: var(--bg-panel);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 1.3rem;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  transition: all 0.1s ease;
+  touch-action: manipulation;
+}
+
+.dpad-btn:active, .dpad-btn.pressed {
+  background: rgba(139, 92, 246, 0.35);
+  border-color: var(--color-purple);
+  transform: scale(0.93);
+  box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+}
+
+.dpad-up { grid-area: up; }
+.dpad-left { grid-area: left; }
+.dpad-right { grid-area: right; }
+.dpad-down { grid-area: down; }
+.dpad-center {
+  grid-area: center;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px dashed rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+
+/* Barra de Botões Secundários */
+.bottom-bar {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 0 4px;
+}
+
+.pill-btn {
+  flex: 1;
+  padding: 9px 14px;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-panel);
+  border-radius: 10px;
+  color: var(--text-main);
+  font-family: var(--font-ui);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  transition: all 0.2s ease;
+}
+
+.pill-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.pill-btn.danger {
+  border-color: rgba(255, 42, 95, 0.3);
+  color: #ff85a1;
+}
+
+.pill-btn.danger:hover {
+  background: rgba(255, 42, 95, 0.15);
+  border-color: var(--color-red);
+}
+
+/* Modal / Popups Estilizados */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(4, 5, 8, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.modal-backdrop.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-card {
+  background: #121622;
+  border: 1px solid rgba(139, 92, 246, 0.35);
+  border-radius: 18px;
+  width: 100%;
+  max-width: 440px;
+  padding: 24px;
+  box-shadow: 
+    0 20px 50px rgba(0, 0, 0, 0.9),
+    0 0 35px rgba(139, 92, 246, 0.2);
+  transform: translateY(20px) scale(0.96);
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.modal-backdrop.active .modal-card {
+  transform: translateY(0) scale(1);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding-bottom: 12px;
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.modal-body {
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: #d1d5db;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.rule-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.rule-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 6px;
+}
+
+.action-btn {
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-family: var(--font-ui);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s ease;
+}
+
+.action-btn.primary {
+  background: linear-gradient(135deg, #8b5cf6, #6366f1);
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(139, 92, 246, 0.4);
+}
+
+.action-btn.primary:hover {
+  background: linear-gradient(135deg, #9d75fa, #787bf6);
+  transform: translateY(-1px);
+}
+
+.action-btn.secondary {
+  background: rgba(255, 255, 255, 0.08);
+  color: #e5e7eb;
+}
+
+.action-btn.secondary:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* Modal de Vitória: Estrelas e Desafios */
+.victory-stars {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  font-size: 2.2rem;
+  margin: 4px 0 8px;
+}
+
+.victory-challenges {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  text-align: left;
+  background: rgba(0, 0, 0, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 10px;
+  padding: 10px 14px;
+  margin: 4px 0;
+  font-size: 0.8rem;
+}
+
+.challenge-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.challenge-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #e2e8f0;
+}
+
+.challenge-badge.achieved {
+  color: var(--text-gold);
+  font-weight: 600;
+}
+
+.victory-stat-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.vstat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.vstat-val {
+  font-size: 1.25rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.vstat-lbl {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+/* Dicas de Teclado no Rodapé */
+.keyboard-legend {
+  font-size: 0.72rem;
+  color: #6b7280;
+  text-align: center;
+  letter-spacing: 0.3px;
+  margin-top: 6px;
+}
+
+.key-badge {
+  display: inline-block;
+  padding: 2px 5px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+  font-weight: 700;
+  color: #d1d5db;
+}
+
+/* Responsividade */
+@media (max-width: 520px) {
+  body {
+    padding: 6px 4px 20px;
+  }
+  .hud-bar {
+    grid-template-columns: 1fr 1.2fr 0.9fr;
+    padding: 8px 10px;
+  }
+  .stage-name-ticker {
+    max-width: 90px;
+  }
+  .dpad-container {
+    grid-template-columns: 52px 52px 52px;
+    grid-template-rows: 46px 46px 46px;
+  }
+}

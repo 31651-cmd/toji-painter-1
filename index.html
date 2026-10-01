@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Toji Painter - Jogo de puzzle e pintura tática inspirado em Ninja Painter com Toji Fushiguro de Jujutsu Kaisen.">
+  <meta name="theme-color" content="#0a0c12">
+  <title>Toji Painter | 伏黒甚爾 - Jujutsu Puzzle</title>
+
+  <!-- Google Fonts para estética moderna e anime -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700;900&family=Outfit:wght@400;600;700;900&display=swap" rel="stylesheet">
+
+  <!-- Folha de Estilos Externa (CSS3) -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div class="game-wrapper">
+    <!-- Cabeçalho -->
+    <header class="header">
+      <div class="header-titles">
+        <div class="title-row">
+          <h1 class="game-title">TOJI PAINTER</h1>
+          <span class="kanji-badge">伏黒 甚爾</span>
+        </div>
+        <span class="subtitle">Caçador de Feiticeiros • Quebrador de Barreiras</span>
+      </div>
+
+      <div class="quick-actions">
+        <button id="btnSound" class="icon-btn" title="Alternar Som" aria-label="Som">🔊</button>
+        <button id="btnHelp" class="icon-btn" title="Como Jogar" aria-label="Ajuda">❓</button>
+      </div>
+    </header>
+
+    <!-- Barra de Status / HUD -->
+    <section class="hud-bar">
+      <!-- Nível / Fase Atual -->
+      <div class="hud-col">
+        <span class="hud-label">Missão</span>
+        <div class="level-badge">
+          <span id="hudLevelNum" class="level-num">Fase 1/5</span>
+        </div>
+        <span id="hudLevelName" class="stage-name-ticker">Treinamento em Shibuya</span>
+      </div>
+
+      <!-- Tinta Atual do Toji -->
+      <div class="hud-col" style="align-items: center;">
+        <span class="hud-label">Tinta Amaldiçoada</span>
+        <div id="paintCard" class="paint-indicator-card">
+          <div id="paintVessel" class="paint-vessel"></div>
+          <div class="paint-info">
+            <span id="paintName" class="paint-name">Nenhuma</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selos Restantes, Movimentos e Estrelas -->
+      <div class="hud-stats">
+        <span class="hud-label">Progresso</span>
+        <div class="target-counter" title="Selos a pintar">
+          <span style="font-size: 0.8rem;">🎯</span>
+          <span id="hudTargetCount">0 / 3</span>
+        </div>
+        <div class="moves-counter" id="hudMovesCount">Mov: 0 / 14</div>
+        <div class="stars-counter" id="hudStars" title="Critérios: [Missão] [Shuriken] [Agilidade]">
+          <span class="star-icon" id="starIcon1">★</span>
+          <span class="star-icon" id="starIcon2">★</span>
+          <span class="star-icon" id="starIcon3">★</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Canvas Principal do Jogo -->
+    <div class="canvas-container">
+      <canvas id="gameCanvas" width="528" height="432"></canvas>
+      <div id="portalBanner" class="portal-banner">⚡ BARREIRA ROMPIDA! O PORTAL ESTÁ ABERTO! ⚡</div>
+    </div>
+
+    <!-- Painel de Controles -->
+    <section class="controls-panel">
+      <!-- D-Pad Virtual de Toque -->
+      <div class="dpad-container">
+        <button id="dpadUp" class="dpad-btn dpad-up" aria-label="Cima">▲</button>
+        <button id="dpadLeft" class="dpad-btn dpad-left" aria-label="Esquerda">◀</button>
+        <div class="dpad-center">TOJI</div>
+        <button id="dpadRight" class="dpad-btn dpad-right" aria-label="Direita">▶</button>
+        <button id="dpadDown" class="dpad-btn dpad-down" aria-label="Baixo">▼</button>
+      </div>
+
+      <!-- Botões de Ação Inferiores -->
+      <div class="bottom-bar">
+        <button id="btnRestart" class="pill-btn danger" title="Reiniciar Fase Atual (Tecla R)">
+          <span>↺</span> Reiniciar (R)
+        </button>
+        <button id="btnLevelSelect" class="pill-btn" title="Escolher Fase">
+          <span>📜</span> Escolher Fase
+        </button>
+      </div>
+
+      <div class="keyboard-legend">
+        Controles: <span class="key-badge">W, A, S, D</span> ou <span class="key-badge">Setas</span> para deslizar • <span class="key-badge">R</span> para reiniciar
+      </div>
+    </section>
+  </div>
+
+  <!-- Modal: Como Jogar -->
+  <div id="helpModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">COMO JOGAR</h2>
+        <button id="btnCloseHelp" class="icon-btn">✕</button>
+      </div>
+      <div class="modal-body">
+        <div class="rule-item">
+          <span class="rule-icon">🏃</span>
+          <div>
+            <strong>Movimento Ninja:</strong> Toji desliza velozmente em linha reta até colidir com paredes ou obstáculos. Não é possível parar no meio do caminho!
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">🏺</span>
+          <div>
+            <strong>Latas de Tinta:</strong> Passe pelos vasos de tinta amaldiçoada para carregar uma cor (Carmesim, Azul, Dourado ou Roxo).
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">🎯</span>
+          <div>
+            <strong>Selar os Alvos:</strong> Passe sobre os círculos rituais portando a cor correspondente para pintá-los e neutralizá-los.
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">🌀</span>
+          <div>
+            <strong>Portal de Fuga:</strong> Pinte todos os alvos para dissolver a barreira amaldiçoada. Em seguida, deslize até a saída para concluir a fase!
+          </div>
+        </div>
+        <div class="rule-item">
+          <span class="rule-icon">⭐</span>
+          <div>
+            <strong>As 3 Estrelas Ninja:</strong>
+            <br>• <strong>1ª Estrela:</strong> Quebrar a barreira e escapar pelo portal.
+            <br>• <strong>2ª Estrela:</strong> Coletar a Shuriken de Ouro escondida.
+            <br>• <strong>3ª Estrela:</strong> Terminar dentro do limite de movimentos (Par).
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnStartGame" class="action-btn primary">Entendido! Iniciar Missão</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Vitória de Fase -->
+  <div id="victoryModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title" style="color: #a855f7;">MISSÃO CONCLUÍDA!</h2>
+      </div>
+      <div class="modal-body" style="text-align: center;">
+        <p id="victorySubtitle" style="font-size: 0.95rem; color: #cbd5e1;">A barreira amaldiçoada foi expurgada com sucesso.</p>
+        
+        <div class="victory-stars" id="victoryStarsContainer">
+          <span>★</span><span>★</span><span>★</span>
+        </div>
+
+        <!-- Detalhamento das 3 Conquistas -->
+        <div class="victory-challenges">
+          <div class="challenge-row">
+            <span class="challenge-badge achieved">★ Barreira Neutralizada</span>
+            <span style="color: #22c55e;">Concluído</span>
+          </div>
+          <div class="challenge-row">
+            <span id="vStarShurikenBadge" class="challenge-badge">★ Shuriken Dourada</span>
+            <span id="vStarShurikenStatus">Pendente</span>
+          </div>
+          <div class="challenge-row">
+            <span id="vStarParBadge" class="challenge-badge">★ Agilidade Ninja (Par)</span>
+            <span id="vStarParStatus">Pendente</span>
+          </div>
+        </div>
+
+        <div class="victory-stat-grid">
+          <div class="vstat-item">
+            <span id="vStatMoves" class="vstat-val">12</span>
+            <span class="vstat-lbl">Movimentos</span>
+          </div>
+          <div class="vstat-item">
+            <span id="vStatTime" class="vstat-val">00:18</span>
+            <span class="vstat-lbl">Tempo</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnReplayLevel" class="action-btn secondary">Repetir Fase</button>
+        <button id="btnNextLevel" class="action-btn primary">Próxima Fase ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Seleção de Fases -->
+  <div id="levelSelectModal" class="modal-backdrop">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h2 class="modal-title">ESCOLHER FASE</h2>
+        <button id="btnCloseLvlSelect" class="icon-btn">✕</button>
+      </div>
+      <div class="modal-body" id="levelSelectList" style="gap: 8px;">
+        <!-- Lista gerada dinamicamente via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal: Conclusão Geral do Jogo -->
+  <div id="gameCompleteModal" class="modal-backdrop">
+    <div class="modal-card" style="text-align: center;">
+      <div class="modal-header" style="justify-content: center; border: none;">
+        <h2 class="modal-title" style="font-size: 1.4rem; color: #fbbf24;">RESTRIÇÃO CELESTIAL SUPREMA!</h2>
+      </div>
+      <div class="modal-body">
+        <div style="font-size: 3rem; margin: 4px 0;">🗡️🏆</div>
+        <p>Você completou todas as 5 missões com <strong>Toji Fushiguro</strong>! Mesmo sem nenhuma gota de energia amaldiçoada, você provou que reflexos e inteligência física superam qualquer feitiçaria.</p>
+        <div class="victory-stat-grid" style="margin-top: 8px;">
+          <div class="vstat-item">
+            <span id="totalStarsStat" class="vstat-val">15 / 15</span>
+            <span class="vstat-lbl">Estrelas Totais</span>
+          </div>
+          <div class="vstat-item">
+            <span id="totalMovesStat" class="vstat-val">--</span>
+            <span class="vstat-lbl">Movimentos Totais</span>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer" style="justify-content: center;">
+        <button id="btnRestartAll" class="action-btn primary">Jogar Novamente do Começo</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lógica do Jogo (JavaScript) -->
+  <script src="game.js"></script>
+</body>
+</html>
